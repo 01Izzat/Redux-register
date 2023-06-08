@@ -1,10 +1,19 @@
 import { useState } from "react";
 import { icon } from "../constans";
 import { Input } from "../ui";
+import { useSelector, useDispatch } from "react-redux/es/exports";
+import { loginUserStart } from "../slice/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.auth);
+
+  const loginHandler = (e) => {
+    e.preventDefault();
+    dispatch(loginUserStart());
+  };
 
   return (
     <div className="text-center mt-5">
@@ -21,8 +30,13 @@ const Login = () => {
             setState={setPassword}
           />
 
-          <button className="w-100 btn btn-lg btn-primary mt-2" type="submit">
-            Login
+          <button
+            className="w-100 btn btn-lg btn-primary mt-2"
+            type="submit"
+            onClick={loginHandler}
+            disabled={isLoading}
+          >
+            {isLoading ? "loading..." : "Login"}
           </button>
         </form>
       </main>
